@@ -1,0 +1,113 @@
+/* ═══════════════════════════════════════════════════════════════════
+   CookieConsent — All values reference globals.css design tokens.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.wrapper {
+  position: fixed;
+  bottom: var(--space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-toast);
+  max-width: var(--cookie-max-width);
+  width: calc(100% - var(--space-8));
+  animation: slideUp var(--duration-slow) var(--ease-out) both;
+}
+
+.banner {
+  display: block;
+  width: 100%;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+}
+
+.text {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: var(--cookie-font-size);
+  font-weight: var(--footer-font-weight);
+  line-height: 1.5;
+  color: var(--cookie-text-color);
+}
+
+.link {
+  color: var(--pipe-color);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link:hover {
+  color: var(--accent-hover);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.accept,
+.decline {
+  font-family: var(--font-body);
+  font-size: var(--cookie-font-size);
+  font-weight: 400;
+  letter-spacing: var(--footer-letter-spacing);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.accept {
+  background: var(--cookie-btn-bg);
+  color: var(--cookie-btn-color);
+  border: 1px solid var(--cookie-btn-bg);
+}
+
+.accept:hover {
+  background: var(--cookie-btn-bg-hover);
+  border-color: var(--cookie-btn-bg-hover);
+}
+
+.decline {
+  background: transparent;
+  color: var(--footer-color);
+  border: 1px solid var(--cookie-decline-border);
+}
+
+.decline:hover {
+  border-color: var(--pipe-color);
+  color: var(--pipe-color);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions {
+    justify-content: flex-end;
+  }
+
+  .wrapper {
+    bottom: var(--space-4);
+  }
+}

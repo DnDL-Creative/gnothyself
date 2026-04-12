@@ -1,0 +1,75 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Legal — Shared styles for privacy, terms, shipping, contact.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.main {
+  min-height: 100dvh;
+  background: var(--background);
+  padding: var(--space-6) var(--space-6) var(--space-16);
+}
+
+.content {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.title {
+  font-family: var(--title-font);
+  font-weight: var(--title-weight);
+  letter-spacing: var(--title-tracking);
+  color: var(--title-color);
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-2);
+}
+
+.updated {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--nav-color);
+  margin-bottom: var(--space-6);
+}
+
+.section {
+  margin-bottom: var(--space-6);
+}
+
+.sectionTitle {
+  font-family: var(--title-font);
+  font-weight: 300;
+  font-size: var(--text-lg);
+  color: var(--title-accent-color);
+  letter-spacing: var(--title-tracking);
+  margin-bottom: var(--space-2);
+}
+
+.section p,
+.section li {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 400;
+  color: var(--foreground);
+  line-height: 1.7;
+  margin-bottom: var(--space-3);
+}
+
+.section ul {
+  padding-left: var(--space-6);
+  list-style: disc;
+}
+
+.section a {
+  color: var(--title-accent-color);
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding: var(--space-4) var(--space-4) var(--space-10);
+  }
+
+  .title {
+    font-size: var(--text-xl);
+  }
+}

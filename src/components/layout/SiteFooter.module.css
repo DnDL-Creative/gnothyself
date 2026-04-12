@@ -1,0 +1,95 @@
+/* ═══════════════════════════════════════════════════════════════════
+   SiteFooter — Global footer.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.footer {
+  text-align: center;
+  padding: var(--space-10) var(--space-6) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--background);
+}
+
+.footerLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.footerLinks a {
+  font-family: var(--font-body);
+  font-size: var(--footer-font-size);
+  font-weight: var(--footer-font-weight);
+  letter-spacing: var(--footer-letter-spacing);
+  text-transform: lowercase;
+  color: var(--footer-color);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.footerLinks a:hover {
+  color: var(--footer-color-hover);
+  text-decoration: none;
+}
+
+/* ── PIPE SEPARATORS (with end caps — lighter than nav) ──────────── */
+
+.pipeSep {
+  position: relative;
+  display: inline-block;
+  width: var(--footer-pipe-width);
+  height: var(--footer-pipe-height);
+  background: var(--pipe-color);
+  border-radius: 1px;
+  align-self: center;
+  opacity: var(--footer-pipe-opacity);
+}
+
+.pipeSep::before,
+.pipeSep::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--nav-pipe-cap-width);
+  height: var(--nav-pipe-cap-height);
+  background: var(--pipe-color);
+  border-radius: 1px;
+}
+
+.pipeSep::before {
+  top: 0;
+}
+
+.pipeSep::after {
+  bottom: 0;
+}
+
+.footerCopy {
+  font-family: var(--font-body);
+  font-size: var(--footer-font-size);
+  font-weight: var(--footer-font-weight);
+  letter-spacing: var(--footer-letter-spacing);
+  color: var(--footer-color);
+  opacity: var(--footer-copy-opacity);
+}
+
+@media (max-width: 640px) {
+  .footer {
+    padding: var(--space-6) var(--space-3);
+  }
+
+  .footerLinks {
+    gap: var(--space-2);
+    row-gap: var(--space-2);
+  }
+
+  .footerCopy {
+    text-align: center;
+    font-size: 0.55rem;
+  }
+}

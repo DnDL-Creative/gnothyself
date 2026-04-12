@@ -1,0 +1,156 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Blog — Observations listing. Compact horizontal cards.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.main {
+  min-height: 100dvh;
+  background: var(--background);
+  padding: var(--space-8) var(--space-6);
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.backLink {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--footer-font-size);
+  font-weight: var(--footer-font-weight);
+  letter-spacing: var(--footer-letter-spacing);
+  color: var(--nav-color);
+  text-decoration: none;
+  margin-bottom: var(--space-8);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.backLink:hover {
+  color: var(--nav-color-hover);
+  text-decoration: none;
+}
+
+.header {
+  margin-bottom: var(--space-8);
+}
+
+.header h1 {
+  font-family: var(--title-font);
+  font-weight: var(--title-weight);
+  letter-spacing: var(--title-tracking);
+  color: var(--title-color);
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-1);
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--tagline-font-weight);
+  letter-spacing: var(--tagline-letter-spacing);
+  text-transform: lowercase;
+  color: var(--tagline-color);
+}
+
+/* ── GRID — 3 columns ────────────────────────────────────────────── */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.grid > * {
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.grid > *:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px hsla(25, 30%, 30%, 0.12);
+}
+
+/* ── CARD ────────────────────────────────────────────────────────── */
+
+.cardLink {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.cardLink:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.card {
+  padding: var(--space-4) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 160px;
+}
+
+.cardTitle {
+  font-family: var(--title-font);
+  font-weight: 300;
+  font-size: var(--text-lg);
+  color: var(--title-color);
+  letter-spacing: var(--title-tracking);
+  margin: 0;
+  font-style: normal;
+  text-transform: none;
+}
+
+.cardSubtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--tagline-font-weight);
+  color: var(--foreground);
+  line-height: 1.5;
+}
+
+.tags {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-family: var(--font-body);
+  font-size: 0.55rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  color: var(--pipe-color);
+  border: 1px solid var(--pipe-color);
+  opacity: 0.6;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  line-height: 1.4;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: var(--footer-font-weight);
+  color: var(--foreground);
+  letter-spacing: var(--footer-letter-spacing);
+  opacity: 1;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .main {
+    padding: var(--space-6) var(--space-4);
+  }
+}

@@ -1,0 +1,220 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Root Page — GnoThyself landing.
+   All hardcoded values reference globals.css design tokens.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--background);
+}
+
+/* ── NAV ──────────────────────────────────────────────────────────── */
+
+.nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nav-gap);
+  padding: var(--nav-padding-y) var(--nav-padding-x);
+}
+
+.nav a {
+  font-family: var(--font-body);
+  font-size: var(--nav-font-size);
+  font-weight: var(--nav-font-weight);
+  letter-spacing: var(--nav-letter-spacing);
+  text-transform: lowercase;
+  color: var(--nav-color);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.nav a:hover {
+  color: var(--nav-color-hover);
+}
+
+/* ── PIPE SEPARATORS ─────────────────────────────────────────────── */
+
+.pipeSep {
+  position: relative;
+  display: inline-block;
+  width: var(--nav-pipe-width);
+  height: var(--nav-pipe-height);
+  background: var(--nav-pipe-color);
+  border-radius: 1px;
+  align-self: center;
+  opacity: var(--nav-pipe-opacity);
+}
+
+.pipeSep::before,
+.pipeSep::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--nav-pipe-cap-width);
+  height: var(--nav-pipe-cap-height);
+  background: var(--nav-pipe-color);
+  border-radius: 1px;
+}
+
+.pipeSep::before {
+  top: 0;
+}
+
+.pipeSep::after {
+  bottom: 0;
+}
+
+/* ── CONTENT ─────────────────────────────────────────────────────── */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 560px;
+  padding: var(--space-8) var(--space-6);
+  padding-bottom: var(--space-32);
+}
+
+.heroLogo {
+  width: auto;
+  height: clamp(50px, 6.5vw, 87px);
+  object-fit: contain;
+  margin-bottom: var(--space-1);
+}
+
+.tagline {
+  font-family: var(--font-body);
+  font-size: 1.4rem;
+  font-weight: var(--tagline-font-weight);
+  letter-spacing: var(--tagline-letter-spacing);
+  text-transform: lowercase;
+  color: var(--tagline-color);
+  padding-top: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+/* ── ACTIONS ─────────────────────────────────────────────────────── */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────────────── */
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-6);
+}
+
+.footerLinks {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footerLinks a {
+  font-family: var(--font-body);
+  font-size: var(--footer-font-size);
+  font-weight: var(--footer-font-weight);
+  letter-spacing: var(--footer-letter-spacing);
+  text-transform: lowercase;
+  color: var(--footer-color);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.footerLinks a:hover {
+  color: var(--footer-color-hover);
+}
+
+/* Footer pipes — same shape, lighter */
+.footerLinks .pipeSep {
+  opacity: var(--footer-pipe-opacity);
+  height: var(--footer-pipe-height);
+}
+
+.footerCopy {
+  font-family: var(--font-body);
+  font-size: var(--footer-font-size);
+  font-weight: var(--footer-font-weight);
+  letter-spacing: var(--footer-letter-spacing);
+  color: var(--footer-color);
+  opacity: var(--footer-copy-opacity);
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .main {
+    padding: 0 var(--space-3);
+  }
+
+  .content h1 {
+    font-size: clamp(1.75rem, 7vw, 2.25rem);
+  }
+
+  .content {
+    padding: var(--space-8) var(--space-3);
+  }
+
+  .actions {
+    flex-direction: column;
+    width: 100%;
+    gap: var(--space-3);
+    transform: scale(0.9);
+  }
+
+  .nav {
+    justify-content: space-evenly;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-2);
+  }
+
+  .nav a {
+    font-size: var(--text-xs);
+  }
+
+  .pipeSep {
+    height: 12px;
+  }
+
+  .footer {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .footerLinks {
+    gap: var(--space-2);
+    row-gap: var(--space-2);
+    justify-content: center;
+  }
+
+  .footerCopy {
+    text-align: center;
+    font-size: 0.55rem;
+  }
+}

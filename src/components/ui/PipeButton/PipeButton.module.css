@@ -1,0 +1,53 @@
+/* ═══════════════════════════════════════════════════════════════════
+   PipeButton — All values reference globals.css design tokens.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Wrapper — invisible touch target with the pipe SVG overlay */
+.pipeButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  text-decoration: none;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transform: scale(var(--btn-scale));
+}
+
+.pipeButton:hover {
+  text-decoration: none;
+}
+
+.pipeButton:hover .label {
+  color: var(--btn-color-hover);
+}
+
+/* Shine — copper glow on the pipe frame */
+.svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  filter: brightness(1);
+  transition: filter var(--duration-normal) var(--ease-out);
+}
+
+.pipeButton:hover .svg {
+  filter: brightness(var(--pipe-hover-brightness)) drop-shadow(var(--pipe-hover-glow));
+}
+
+/* Button label text */
+.label {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  letter-spacing: var(--btn-letter-spacing);
+  text-transform: lowercase;
+  color: var(--btn-color);
+  transition: color var(--duration-fast) var(--ease-out);
+}
