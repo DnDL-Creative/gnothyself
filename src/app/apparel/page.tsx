@@ -56,14 +56,20 @@ export default function ApparelPage() {
         {products.map((product) => (
           <article key={product.handle} className={styles.product}>
             <div className={styles.imageWrap}>
-              <Image
-                src={product.image}
-                alt={product.title}
-                width={600}
-                height={600}
-                className={styles.image}
-                priority
-              />
+              {product.image ? (
+                <Image
+                  src={product.image}
+                  alt={product.title}
+                  width={600}
+                  height={600}
+                  className={styles.image}
+                  priority
+                />
+              ) : (
+                <div className={styles.imagePlaceholder}>
+                  <span>Image Coming Soon</span>
+                </div>
+              )}
             </div>
 
             <div className={styles.details}>
