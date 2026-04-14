@@ -1,0 +1,53 @@
+/* ═══════════════════════════════════════════════════════════════════
+   TickerWrapper — Infinite loop auto-scroll (controlled).
+   ═══════════════════════════════════════════════════════════════════ */
+
+.ticker {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 8px 16px 8px;
+}
+
+/* Hide scrollbar + fade edges while auto-scrolling */
+.tickerPlaying {
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 3%,
+    black 97%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 3%,
+    black 97%,
+    transparent 100%
+  );
+}
+
+.tickerPlaying::-webkit-scrollbar {
+  display: none;
+}
+
+/* Show copper scrollbar when paused */
+.tickerPaused {
+  scrollbar-width: thin;
+  scrollbar-color: var(--pipe-color) transparent;
+}
+
+.tickerPaused::-webkit-scrollbar {
+  height: 6px;
+}
+
+.tickerPaused::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tickerPaused::-webkit-scrollbar-thumb {
+  background: var(--pipe-color);
+  border-radius: var(--radius-full);
+}

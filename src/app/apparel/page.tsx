@@ -25,8 +25,22 @@ const products = [
     currency: "USD",
     sizes: ["S", "M", "L", "XL", "2XL"],
     colors: ["White", "Black", "Heather Grey"],
-    available: true,
-    badge: "Debut Drop",
+    available: false,
+    badge: "Coming Soon",
+  },
+  {
+    handle: "literal-tinfoil-hat",
+    title: "Literal Tinfoil Hat",
+    description:
+      "They called us crazy. We made the hat. Premium aluminum-lined headwear for the discerning conspiracy realist. One size fits most awakened heads.",
+    image: null,
+    price: "24.00",
+    compareAtPrice: null,
+    currency: "USD",
+    sizes: ["One Size"],
+    colors: ["Silver"],
+    available: false,
+    badge: "Coming Soon",
   },
 ];
 

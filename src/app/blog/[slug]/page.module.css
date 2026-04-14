@@ -1,16 +1,39 @@
 /* ═══════════════════════════════════════════════════════════════════
-   Blog Post — Individual article template.
+   Blog Post — Full article template.
+   Hero → H1 → Meta → Sections → CTA → Related → Products
    ═══════════════════════════════════════════════════════════════════ */
 
 .main {
   min-height: 100dvh;
   background: var(--background);
-  padding: var(--space-6) var(--space-6) var(--space-16);
+  padding-bottom: var(--space-16);
 }
 
+/* ── HERO ────────────────────────────────────────────────────────── */
+
+.heroWrap {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto var(--space-8);
+  padding: 0 var(--space-6);
+}
+
+.heroImage {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+/* ── ARTICLE ─────────────────────────────────────────────────────── */
+
 .article {
-  max-width: 640px;
+  max-width: 680px;
   margin: 0 auto;
+  padding: 0 var(--space-6);
 }
 
 /* ── HEADER ──────────────────────────────────────────────────────── */
@@ -20,6 +43,23 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--nav-color);
+  text-decoration: none;
+  margin-bottom: var(--space-4);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.backLink:hover {
+  color: var(--nav-color-hover);
 }
 
 .meta {
@@ -40,16 +80,17 @@
 .title {
   font-family: var(--title-font);
   font-weight: var(--title-weight);
-  font-size: var(--text-3xl);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
   letter-spacing: var(--title-tracking);
   color: var(--title-color);
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .subtitle {
   font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: 300;
+  font-style: italic;
   color: var(--foreground);
   opacity: 0.7;
 }
@@ -73,23 +114,154 @@
   opacity: 0.6;
 }
 
-/* ── BODY ────────────────────────────────────────────────────────── */
+/* ── BODY SECTIONS ───────────────────────────────────────────────── */
 
 .body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-10);
 }
 
-.body p {
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.sectionHeading {
+  font-family: var(--title-font);
+  font-weight: var(--title-weight);
+  font-size: var(--text-xl);
+  color: var(--title-color);
+  letter-spacing: var(--title-tracking);
+}
+
+/* Horizontal pipe with flared end caps — rotated version of nav pipeSep */
+.sectionDivider {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--pipe-color);
+}
+
+/* Flared end caps — proportional to 2px pipe gauge */
+.sectionDivider::before,
+.sectionDivider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 4px;
+  background: var(--pipe-color);
+  border-radius: 1px;
+}
+
+.sectionDivider::before {
+  left: 0;
+}
+
+.sectionDivider::after {
+  right: 0;
+}
+
+.section p {
   font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: 400;
   color: var(--foreground);
-  line-height: 1.8;
+  line-height: 1.85;
 }
 
-/* ── FOOTER ──────────────────────────────────────────────────────── */
+/* ── CTA BLOCK ───────────────────────────────────────────────────── */
+
+.ctaBlock {
+  margin: var(--space-16) auto;
+  max-width: 680px;
+  padding: 0 var(--space-6);
+}
+
+.ctaInner {
+  text-align: center;
+  padding: var(--space-10) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.ctaHeading {
+  font-family: var(--title-font);
+  font-weight: var(--title-weight);
+  font-size: var(--text-2xl);
+  color: var(--title-color);
+  letter-spacing: var(--title-tracking);
+}
+
+.ctaText {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  opacity: 0.7;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  color: var(--pipe-color);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-6);
+  border: 1px solid var(--pipe-color);
+  border-radius: var(--radius-full);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.ctaLink:hover {
+  background: var(--pipe-color);
+  color: var(--background);
+}
+
+/* ── CAROUSEL SECTIONS ───────────────────────────────────────────── */
+
+.carouselSection {
+  margin: var(--space-16) auto 0;
+  max-width: 960px;
+  padding: 0 var(--space-6);
+}
+
+.carouselHeading {
+  font-family: var(--title-font);
+  font-weight: var(--title-weight);
+  font-size: var(--text-xl);
+  color: var(--title-color);
+  letter-spacing: var(--title-tracking);
+  margin-bottom: var(--space-4);
+}
+
+.carousel {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--space-4);
+  scrollbar-width: none;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── POST FOOTER ─────────────────────────────────────────────────── */
 
 .postFooter {
   margin-top: var(--space-16);
@@ -98,33 +270,34 @@
   opacity: 0.3;
 }
 
-.backLink {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: 400;
-  color: var(--nav-color);
-  text-decoration: none;
-  margin-bottom: var(--space-4);
-  transition: color var(--duration-fast) var(--ease-out);
-}
-
-.backLink:hover {
-  color: var(--nav-color-hover);
-}
-
 /* ── RESPONSIVE ──────────────────────────────────────────────────── */
 
 @media (max-width: 640px) {
-  .main {
-    padding: var(--space-4) var(--space-4) var(--space-10);
+  .heroWrap {
+    padding: 0 var(--space-3);
+  }
+
+  .article {
+    padding: 0 var(--space-4);
   }
 
   .title {
     font-size: var(--text-2xl);
   }
 
-  .body p {
+  .section p {
     font-size: var(--text-sm);
+  }
+
+  .ctaBlock {
+    padding: 0 var(--space-4);
+  }
+
+  .ctaInner {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .carouselSection {
+    padding: 0 var(--space-4);
   }
 }

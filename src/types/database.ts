@@ -1,7 +1,13 @@
 /* ═══════════════════════════════════════════════════════════════════
    Supabase Database Types (Placeholder)
+   All intheGno tables use the `itg_` prefix.
    Run `npx supabase gen types typescript` once the project is
    connected to generate real types from your schema.
+
+   Future integration points:
+   - Shopify Storefront API (product sync → itg_products)
+   - Stripe (subscription/wholesale → itg_subscriptions)
+   - Cloudflare Images (asset URLs stored in rows)
    ═══════════════════════════════════════════════════════════════════ */
 
 export type Json =
@@ -15,7 +21,7 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      posts: {
+      itg_posts: {
         Row: {
           id: string;
           slug: string;
@@ -35,6 +41,8 @@ export type Database = {
           reading_time_minutes: number | null;
           seo_title: string | null;
           seo_description: string | null;
+          /** Product handle for CTA block (links to Shopify product) */
+          cta_product_handle: string | null;
         };
         Insert: {
           id?: string;
@@ -53,6 +61,7 @@ export type Database = {
           reading_time_minutes?: number | null;
           seo_title?: string | null;
           seo_description?: string | null;
+          cta_product_handle?: string | null;
         };
         Update: {
           slug?: string;
@@ -69,10 +78,11 @@ export type Database = {
           reading_time_minutes?: number | null;
           seo_title?: string | null;
           seo_description?: string | null;
+          cta_product_handle?: string | null;
           updated_at?: string;
         };
       };
-      profiles: {
+      itg_profiles: {
         Row: {
           id: string;
           email: string;
@@ -94,6 +104,45 @@ export type Database = {
           avatar_url?: string | null;
           role?: "admin" | "editor" | "reader";
           updated_at?: string;
+        };
+      };
+      /** Future: Synced from Shopify Storefront API */
+      itg_products: {
+        Row: {
+          id: string;
+          shopify_id: string;
+          handle: string;
+          title: string;
+          description: string | null;
+          price: string;
+          compare_at_price: string | null;
+          currency: string;
+          image_url: string | null;
+          available: boolean;
+          synced_at: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          shopify_id: string;
+          handle: string;
+          title: string;
+          description?: string | null;
+          price: string;
+          compare_at_price?: string | null;
+          currency?: string;
+          image_url?: string | null;
+          available?: boolean;
+          synced_at?: string;
+        };
+        Update: {
+          title?: string;
+          description?: string | null;
+          price?: string;
+          compare_at_price?: string | null;
+          image_url?: string | null;
+          available?: boolean;
+          synced_at?: string;
         };
       };
     };

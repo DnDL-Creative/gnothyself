@@ -102,7 +102,7 @@ export default function RootLayout({
       style={{ colorScheme: "light" }}
       suppressHydrationWarning
     >
-      <body>
+      <body suppressHydrationWarning>
         <SiteNav />
         {children}
         <SiteFooter />

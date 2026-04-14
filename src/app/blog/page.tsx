@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PipeFrame } from "@/components/ui/PipeFrame/PipeFrame";
+import { getAllPosts } from "./posts";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -9,34 +10,9 @@ export const metadata: Metadata = {
     "Field notes from the uncomfortable middle. Essays on new-age grift, nonlinear truth, and the patterns they don't want you to see.",
 };
 
-const posts = [
-  {
-    slug: "new-age-grift",
-    title: "New Age Grift",
-    subtitle: "When spirituality becomes a sales funnel",
-    date: "Apr 11, 2026",
-    tags: ["manipulation", "fake authenticity"],
-    readTime: "6 min read",
-  },
-  {
-    slug: "truth-isnt-linear",
-    title: "Truth Isn't Linear",
-    subtitle: "On the obsession with being right",
-    date: "Apr 18, 2026",
-    tags: ["NPCs", "false truth"],
-    readTime: "8 min read",
-  },
-  {
-    slug: "will-we-split-in-two",
-    title: "Humanity Has Already Split",
-    subtitle: "The torus, the pendulum, and the pattern",
-    date: "Apr 25, 2026",
-    tags: ["NPCs", "the future"],
-    readTime: "10 min read",
-  },
-];
+export default async function BlogPage() {
+  const posts = await getAllPosts();
 
-export default function BlogPage() {
   return (
     <main className={styles.main}>
       <header className={styles.header}>
