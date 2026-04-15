@@ -77,15 +77,14 @@ export default function RelatedPosts({ currentSlug, allPosts }: RelatedPostsProp
               <article className={styles.card}>
                 <h3 className={styles.cardTitle}>{post.title}</h3>
                 <p className={styles.cardSubtitle}>{post.subtitle}</p>
-                <div className={styles.cardTags}>
+                <div className={styles.cardFooter}>
+                  <span className={styles.cardMeta}>{post.date}</span>
+                  <span className={styles.dot}>·</span>
+                  <span className={styles.readTime}>{post.readTime}</span>
+                  <span className={styles.dot}>·</span>
                   {post.tags.map((t) => (
                     <span key={t} className={styles.tag}>{t}</span>
                   ))}
-                </div>
-                <div className={styles.cardMeta}>
-                  <span>{post.date}</span>
-                  <span className={styles.dot}>·</span>
-                  <span>{post.readTime}</span>
                 </div>
               </article>
             </PipeFrame>

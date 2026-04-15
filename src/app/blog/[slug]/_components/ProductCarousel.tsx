@@ -12,7 +12,7 @@ const products = [
     handle: "proud-unregistered-voter",
     title: "Proud Unregistered Voter",
     image:
-      "https://imagedelivery.net/5MAOvNjO0OBL917jHWR5AA/2c371245-8de9-4391-3c56-df3e77b46700/public",
+      "https://media.beinthegno.com/apparel/shirt-proud.png",
     price: "29.00",
     category: "apparel",
     href: "/apparel",
@@ -22,7 +22,7 @@ const products = [
   },
   {
     handle: "literal-tinfoil-hat",
-    title: "Literal Tinfoil Hat",
+    title: "(Almost) Literal Tinfoil Hat",
     image: null,
     price: "24.00",
     category: "apparel",

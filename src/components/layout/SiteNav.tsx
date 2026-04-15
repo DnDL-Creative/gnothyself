@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "./SiteNav.module.css";
 
 const LOGO_URL =
-  "https://imagedelivery.net/5MAOvNjO0OBL917jHWR5AA/85f39318-adc9-4f99-d550-b7f69fba5800/public";
+  "https://media.beinthegno.com/branding/main-logo.png";
 
 export function SiteNav() {
   return (

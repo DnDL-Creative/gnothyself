@@ -56,7 +56,7 @@ export const metadata: Metadata = {
       "Tools for the spiritually autonomous. Copper, orgone, EMF protection, and apparel for those who question everything.",
     images: [
       {
-        url: "https://imagedelivery.net/5MAOvNjO0OBL917jHWR5AA/709c8213-065c-4308-7550-54a67fbc5d00/public",
+        url: "https://media.beinthegno.com/branding/og-default.png",
         width: 1200,
         height: 630,
         alt: "intheGno — Stay Grounded",
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     description:
       "Tools for the spiritually autonomous. Copper, orgone, EMF protection, and apparel.",
     images: [
-      "https://imagedelivery.net/5MAOvNjO0OBL917jHWR5AA/709c8213-065c-4308-7550-54a67fbc5d00/public",
+      "https://media.beinthegno.com/branding/og-default.png",
     ],
   },
   robots: {

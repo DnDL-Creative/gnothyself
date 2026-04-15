@@ -15,6 +15,7 @@ import { createClient } from "@supabase/supabase-js";
 export interface BlogPost {
   slug: string;
   title: string;
+  seoTitle?: string;
   subtitle: string;
   date: string;
   tags: string[];
@@ -23,6 +24,14 @@ export interface BlogPost {
   heroImageAlt?: string;
   /** Raw HTML body content — rendered via html-react-parser */
   content: string;
+  /** Spotify/SoundCloud embed URL */
+  musicEmbed?: string;
+  /** Narrated blogcast audio URL */
+  blogcastUrl?: string;
+  /** Post author name */
+  author?: string;
+  /** Author title/role (e.g. "Writer", "Founder") */
+  authorTitle?: string;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -38,6 +47,21 @@ function estimateReadTime(html: string): string {
   const words = stripHtml(html).split(/\s+/).length;
   const minutes = Math.max(1, Math.ceil(words / 200));
   return `${minutes} min read`;
+}
+
+/** Format YYYY-MM-DD → "Month Day, 'YY" */
+export function formatDate(dateString: string): string {
+  if (!dateString) return "";
+  // If already formatted with comma, convert the year to 'YY
+  if (dateString.includes(",")) {
+    return dateString.replace(/,\s*(\d{4})$/, (_, y) => `, '${y.slice(2)}`);
+  }
+  const date = new Date(dateString + "T00:00:00Z");
+  if (isNaN(date.getTime())) return dateString;
+  const month = date.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" });
+  const day = date.getUTCDate();
+  const year = String(date.getUTCFullYear()).slice(2);
+  return `${month} ${day}, '${year}`;
 }
 
 /** Extract a subtitle from the first <p> tag content */
@@ -61,13 +85,18 @@ function rowToPost(row: any): BlogPost {
   return {
     slug: row.slug,
     title: row.title,
-    subtitle: extractSubtitle(html),
-    date: row.date,
+    seoTitle: row.seo_title,
+    subtitle: row.subtitle || extractSubtitle(html),
+    date: formatDate(row.date),
     tags: row.tag ? [row.tag] : [],
     readTime: estimateReadTime(html),
     heroImage: row.image || undefined,
-    heroImageAlt: row.title,
+    heroImageAlt: row.image_caption || row.title,
     content: html,
+    musicEmbed: row.music_embed || undefined,
+    blogcastUrl: row.blogcast_url || undefined,
+    author: row.author || undefined,
+    authorTitle: row.author_title || undefined,
   };
 }
 

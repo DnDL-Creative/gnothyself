@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { PipeFrame } from "@/components/ui/PipeFrame/PipeFrame";
 import { getAllPosts } from "./posts";
+import BlogGrid from "./BlogGrid";
 import styles from "./page.module.css";
+
+/** Revalidate every 60s so new posts appear without redeploying */
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Observations",
@@ -22,28 +24,7 @@ export default async function BlogPage() {
         </p>
       </header>
 
-      <div className={styles.grid}>
-        {posts.map((post) => (
-          <Link key={post.slug} href={`/blog/${post.slug}`} className={styles.cardLink}>
-            <PipeFrame bg="hsl(38, 28%, 88%)">
-              <article className={styles.card}>
-                <h2 className={styles.cardTitle}>{post.title}</h2>
-                <p className={styles.cardSubtitle}>{post.subtitle}</p>
-                <div className={styles.tags}>
-                  {post.tags.map((t) => (
-                    <span key={t} className={styles.tag}>{t}</span>
-                  ))}
-                </div>
-                <div className={styles.meta}>
-                  <span>{post.date}</span>
-                  <span>·</span>
-                  <span>{post.readTime}</span>
-                </div>
-              </article>
-            </PipeFrame>
-          </Link>
-        ))}
-      </div>
+      <BlogGrid posts={posts} />
     </main>
   );
 }

@@ -19,7 +19,7 @@ const products = [
     title: "Proud Unregistered Voter",
     description:
       'P. Diddy used to tell us to "Vote or Die!" Then it was finally revealed he was a huge pedo, so... yea we\'re good. This one is bound to catch some fluoride stares at the grocery store. 100% ring-spun cotton. Pre-shrunk.',
-    image: "https://imagedelivery.net/5MAOvNjO0OBL917jHWR5AA/2c371245-8de9-4391-3c56-df3e77b46700/public",
+    image: "https://media.beinthegno.com/apparel/shirt-proud.png",
     price: "29.00",
     compareAtPrice: "38.00",
     currency: "USD",
@@ -30,9 +30,9 @@ const products = [
   },
   {
     handle: "literal-tinfoil-hat",
-    title: "Literal Tinfoil Hat",
+    title: "(Almost) Literal Tinfoil Hat",
     description:
-      "They called us crazy. We made the hat. Premium aluminum-lined headwear for the discerning conspiracy realist. One size fits most awakened heads.",
+      "They called us crazy. We made the hat. Lined with a Faraday mesh — the same shielding principle used in military-grade EMF enclosures — except this one goes on your head. • Blocks RF & microwave frequencies • Stylish enough for the farmers market • Scientifically grounded, socially questionable • One size fits most awakened heads",
     image: null,
     price: "24.00",
     compareAtPrice: null,

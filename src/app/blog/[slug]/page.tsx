@@ -5,9 +5,15 @@ import { notFound } from "next/navigation";
 import parse from "html-react-parser";
 import { PipeFrame } from "@/components/ui/PipeFrame/PipeFrame";
 import { getPost, getAllSlugs, getAllPosts } from "../posts";
+import { processShortcodes } from "../processShortcodes";
 import RelatedPosts from "./_components/RelatedPosts";
 import ProductCarousel from "./_components/ProductCarousel";
+import CarouselHydrator from "./_components/CarouselHydrator";
+import ImageLightbox from "@/components/ui/ImageLightbox";
 import styles from "./page.module.css";
+
+/** Revalidate every 60s so VibeWriter edits go live without redeploying */
+export const revalidate = 60;
 
 type Params = Promise<{ slug: string }>;
 
@@ -25,10 +31,10 @@ export async function generateMetadata({
   const post = await getPost(slug);
   if (!post) return { title: "Not Found" };
   return {
-    title: post.title,
+    title: post.seoTitle || post.title,
     description: post.subtitle,
     openGraph: {
-      title: post.title,
+      title: post.seoTitle || post.title,
       description: post.subtitle,
       type: "article",
       ...(post.heroImage && {
@@ -64,6 +70,11 @@ export default async function BlogPostPage({
               priority
             />
           </PipeFrame>
+          {post.heroImageAlt && post.heroImageAlt !== post.title && (
+            <div className={styles.heroCaption}>
+              {post.heroImageAlt}
+            </div>
+          )}
         </div>
       )}
 
@@ -79,6 +90,12 @@ export default async function BlogPostPage({
             <span>{post.date}</span>
             <span className={styles.dot}>·</span>
             <span>{post.readTime}</span>
+            {post.author && (
+              <>
+                <span className={styles.dot}>·</span>
+                <span>{post.author}{post.authorTitle ? ` | ${post.authorTitle}` : ""}</span>
+              </>
+            )}
           </div>
           <h1 className={styles.title}>{post.title}</h1>
           <p className={styles.subtitle}>{post.subtitle}</p>
@@ -89,9 +106,39 @@ export default async function BlogPostPage({
           </div>
         </header>
 
+        {/* ── AUDIO (Spotify / Blogcast) ────────────────────────── */}
+        {(post.musicEmbed || post.blogcastUrl) && (
+          <div className={styles.audioSection}>
+            {post.musicEmbed && (
+              <div className={styles.audioCard}>
+                <iframe
+                  style={{ borderRadius: "12px", display: "block" }}
+                  src={post.musicEmbed.includes("/embed/") ? post.musicEmbed : post.musicEmbed.replace(".com/", ".com/embed/")}
+                  width="100%"
+                  height="152"
+                  frameBorder="0"
+                  allowFullScreen
+                  loading="lazy"
+                  title="Music embed"
+                />
+              </div>
+            )}
+            {post.blogcastUrl && (
+              <div className={styles.audioCard}>
+                <div className={styles.blogcastLabel}>⊙ blogcast</div>
+                <audio controls className={styles.blogcastPlayer}>
+                  <source src={post.blogcastUrl} />
+                </audio>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* ── BODY CONTENT ────────────────────────────────────── */}
-        <div className={styles.body}>
-          {post.content ? parse(post.content) : (
+        <div className={styles.body} data-lightbox>
+          <CarouselHydrator />
+          <ImageLightbox />
+          {post.content ? parse(processShortcodes(post.content)) : (
             <p>Content unavailable.</p>
           )}
         </div>

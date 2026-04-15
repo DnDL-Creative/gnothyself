@@ -13,19 +13,26 @@
 
 .heroWrap {
   position: relative;
-  width: 100%;
-  max-width: 960px;
+  width: 90%;
+  max-width: 720px;
   margin: 0 auto var(--space-8);
-  padding: 0 var(--space-6);
 }
 
 .heroImage {
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: var(--radius-md);
   display: block;
+}
+
+.heroCaption {
+  text-align: center;
+  font-family: var(--font-inter);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-3);
+  font-style: italic;
 }
 
 /* ── ARTICLE ─────────────────────────────────────────────────────── */
@@ -114,12 +121,350 @@
   opacity: 0.6;
 }
 
+/* ── AUDIO SECTION ──────────────────────────────────────────────── */
+
+.audioSection {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-10);
+}
+
+/* Side-by-side when both exist */
+.audioSection:has(.audioCard + .audioCard) {
+  grid-template-columns: 1fr 1fr;
+}
+
+.audioCard {
+  border: 1px solid var(--pipe-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  background: color-mix(in srgb, var(--background) 95%, var(--pipe-color));
+}
+
+.blogcastLabel {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: var(--pipe-color);
+  margin-bottom: var(--space-3);
+}
+
+.blogcastPlayer {
+  width: 100%;
+  height: 40px;
+  border-radius: var(--radius-full);
+}
+
+@media (max-width: 640px) {
+  .audioSection:has(.audioCard + .audioCard) {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── BODY SECTIONS ───────────────────────────────────────────────── */
 
 .body {
   display: flex;
   flex-direction: column;
   gap: var(--space-10);
+}
+
+/* ── INLINE MEDIA (from VibeWriter shortcodes) ──────────────────── */
+
+/* Video embeds — responsive 16:9 container */
+.body :global(.itg-media-video) {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: var(--space-4) 0;
+  border: 1px solid var(--pipe-color);
+  background: #000;
+}
+
+.body :global(.itg-media-video) iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Inline images — figure + optional caption */
+.body :global(.itg-media-image) {
+  margin: var(--space-6) 0;
+  padding: 0;
+}
+
+.body :global(.itg-media-image) img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  display: block;
+  border: 1px solid var(--pipe-color);
+  cursor: zoom-in;
+  transition: opacity 0.2s;
+}
+.body :global(.itg-media-image) img:hover {
+  opacity: 0.9;
+}
+
+.body :global(.itg-media-image) figcaption {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: var(--space-2);
+  font-style: italic;
+}
+
+/* Size variants */
+.body :global(.itg-size-small) { max-width: 320px; }
+.body :global(.itg-size-medium) { max-width: 480px; }
+.body :global(.itg-size-large) { max-width: 100%; }
+.body :global(.itg-size-full) { max-width: 100%; }
+
+/* Alignment variants */
+.body :global(.itg-align-left) { margin-left: 0; margin-right: auto; }
+.body :global(.itg-align-center) { margin-left: auto; margin-right: auto; }
+.body :global(.itg-align-right) { margin-left: auto; margin-right: 0; }
+
+/* Image galleries (duo / trio) */
+.body :global(.itg-media-gallery) {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-6) 0;
+  padding: 0;
+}
+
+.body :global(.itg-gallery-duo) {
+  grid-template-columns: 1fr 1fr;
+}
+
+.body :global(.itg-gallery-trio) {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.body :global(.itg-media-gallery) img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--pipe-color);
+  aspect-ratio: 4 / 3;
+}
+
+.body :global(.itg-media-gallery) figcaption {
+  grid-column: 1 / -1;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-align: center;
+  font-style: italic;
+}
+
+/* Audio embeds */
+.body :global(.itg-media-audio) {
+  margin: var(--space-6) 0;
+  border-radius: 16px;
+  overflow: visible;
+  background: #2c2118;
+  border: 1px solid var(--pipe-color);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.body :global(.itg-media-audio)::before {
+  content: "♪";
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+}
+
+.body :global(.itg-media-audio) audio {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  color-scheme: dark;
+  filter: invert(0);
+}
+
+.body :global(.itg-media-audio) iframe {
+  border-radius: 12px;
+}
+
+@media (max-width: 640px) {
+  .body :global(.itg-gallery-trio) {
+    grid-template-columns: 1fr;
+  }
+  .body :global(.itg-gallery-duo) {
+    grid-template-columns: 1fr;
+  }
+  .body :global(.itg-size-small) { max-width: 100%; }
+  .body :global(.itg-size-medium) { max-width: 100%; }
+}
+
+/* ═══ IMAGE CAROUSEL — CineSonic-style card deck ═══ */
+.body :global(.itg-media-carousel) {
+  margin: var(--space-8, 3rem) 0;
+  padding: 0;
+  position: relative;
+}
+
+/* ── Deck viewport ── */
+.body :global(.itg-carousel-track) {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: visible;
+  border: none;
+  border-radius: 0;
+}
+
+.body :global(.itg-carousel-track)::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Individual cards ── */
+.body :global(.itg-carousel-slide) {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid var(--pipe-color);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.body :global(.itg-carousel-slide.itg-slide-active) {
+  opacity: 1;
+  z-index: 10;
+  transform: rotate(0deg) scale(1) translateX(0);
+  pointer-events: auto;
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.2),
+    0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.body :global(.itg-carousel-slide.itg-slide-prev) {
+  opacity: 0.5;
+  z-index: 5;
+  transform: rotate(-3deg) scale(0.92) translateX(-12%);
+  filter: brightness(0.75);
+}
+
+.body :global(.itg-carousel-slide.itg-slide-next) {
+  opacity: 0.5;
+  z-index: 5;
+  transform: rotate(3deg) scale(0.92) translateX(12%);
+  filter: brightness(0.75);
+}
+
+.body :global(.itg-carousel-slide.itg-slide-far-prev) {
+  opacity: 0.25;
+  z-index: 2;
+  transform: rotate(-5deg) scale(0.85) translateX(-20%);
+  filter: brightness(0.6);
+}
+
+.body :global(.itg-carousel-slide.itg-slide-far-next) {
+  opacity: 0.25;
+  z-index: 2;
+  transform: rotate(5deg) scale(0.85) translateX(20%);
+  filter: brightness(0.6);
+}
+
+.body :global(.itg-carousel-slide) img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: zoom-in;
+}
+
+/* ── Control pill (CineSonic style) ── */
+.body :global(.itg-carousel-controls) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 14px auto 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--pipe-color);
+  width: fit-content;
+}
+
+/* ── Chevron buttons ── */
+.body :global(.itg-carousel-prev),
+.body :global(.itg-carousel-next) {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--pipe-color);
+  background: transparent;
+  color: var(--pipe-color);
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: static;
+  transform: none;
+}
+.body :global(.itg-carousel-prev:hover),
+.body :global(.itg-carousel-next:hover) {
+  background: var(--pipe-color);
+  color: var(--bg, #f5f0e8);
+}
+
+/* ── Dots ── */
+.body :global(.itg-carousel-dots) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.body :global(.itg-carousel-dot) {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pipe-color);
+  border: none;
+  opacity: 0.35;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+.body :global(.itg-carousel-dot:hover) {
+  transform: scale(1.4);
+  opacity: 0.7;
+}
+.body :global(.itg-carousel-dot.itg-dot-active) {
+  opacity: 1;
+  transform: scale(1.3);
+  box-shadow: 0 0 8px var(--pipe-color);
+}
+
+.body :global(.itg-media-carousel) figcaption {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: var(--space-2);
+  font-style: italic;
 }
 
 .section {
