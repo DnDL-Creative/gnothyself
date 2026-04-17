@@ -16,10 +16,13 @@ export interface BlogPost {
   slug: string;
   title: string;
   seoTitle?: string;
+  metaDescription?: string;
   subtitle: string;
   date: string;
   tags: string[];
   readTime: string;
+  wordCount: number;
+  blogcastTime: number;
   heroImage?: string;
   heroImageAlt?: string;
   /** Raw HTML body content — rendered via html-react-parser */
@@ -32,6 +35,8 @@ export interface BlogPost {
   author?: string;
   /** Author title/role (e.g. "Writer", "Founder") */
   authorTitle?: string;
+  /** Hero image style preferences */
+  heroStyle?: { ratio?: string; shape?: string };
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -43,10 +48,11 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
-function estimateReadTime(html: string): string {
-  const words = stripHtml(html).split(/\s+/).length;
-  const minutes = Math.max(1, Math.ceil(words / 200));
-  return `${minutes} min read`;
+function estimateReadTime(html: string): { readTime: string; wordCount: number; blogcastTime: number } {
+  const words = stripHtml(html).split(/\s+/).filter(w => w.length > 0).length;
+  const readMinutes = Math.max(1, Math.ceil(words / 200));
+  const blogcastMinutes = Math.max(1, Math.ceil(words / (9300 / 60)));
+  return { readTime: `${readMinutes} min read`, wordCount: words, blogcastTime: blogcastMinutes };
 }
 
 /** Format YYYY-MM-DD → "Month Day, 'YY" */
@@ -82,14 +88,18 @@ function extractSubtitle(html: string): string {
 
 function rowToPost(row: any): BlogPost {
   const html = typeof row.content === "string" ? row.content : "";
+  const stats = estimateReadTime(html);
   return {
     slug: row.slug,
     title: row.title,
     seoTitle: row.seo_title,
-    subtitle: row.subtitle || extractSubtitle(html),
+    metaDescription: row.meta_description || undefined,
+    subtitle: row.subtitle || "",
     date: formatDate(row.date),
     tags: row.tag ? [row.tag] : [],
-    readTime: estimateReadTime(html),
+    readTime: stats.readTime,
+    wordCount: stats.wordCount,
+    blogcastTime: stats.blogcastTime,
     heroImage: row.image || undefined,
     heroImageAlt: row.image_caption || row.title,
     content: html,
@@ -97,6 +107,7 @@ function rowToPost(row: any): BlogPost {
     blogcastUrl: row.blogcast_url || undefined,
     author: row.author || undefined,
     authorTitle: row.author_title || undefined,
+    heroStyle: row.hero_style || undefined,
   };
 }
 
@@ -178,6 +189,8 @@ const STATIC_POSTS: Record<string, BlogPost> = {
     date: "Apr 11, 2026",
     tags: ["manipulation"],
     readTime: "6 min read",
+    wordCount: 0,
+    blogcastTime: 0,
     content: "<p>Content unavailable — please check database connection.</p>",
   },
   "truth-isnt-linear": {
@@ -187,6 +200,8 @@ const STATIC_POSTS: Record<string, BlogPost> = {
     date: "Apr 18, 2026",
     tags: ["NPCs"],
     readTime: "8 min read",
+    wordCount: 0,
+    blogcastTime: 0,
     content: "<p>Content unavailable — please check database connection.</p>",
   },
   "will-we-split-in-two": {
@@ -196,6 +211,8 @@ const STATIC_POSTS: Record<string, BlogPost> = {
     date: "Apr 25, 2026",
     tags: ["NPCs"],
     readTime: "10 min read",
+    wordCount: 0,
+    blogcastTime: 0,
     content: "<p>Content unavailable — please check database connection.</p>",
   },
   "what-is-freedom": {
@@ -205,6 +222,8 @@ const STATIC_POSTS: Record<string, BlogPost> = {
     date: "May 2, 2026",
     tags: ["sovereignty"],
     readTime: "7 min read",
+    wordCount: 0,
+    blogcastTime: 0,
     content: "<p>Content unavailable — please check database connection.</p>",
   },
   "how-theyre-cooking-us": {
@@ -214,6 +233,8 @@ const STATIC_POSTS: Record<string, BlogPost> = {
     date: "May 9, 2026",
     tags: ["vessel"],
     readTime: "9 min read",
+    wordCount: 0,
+    blogcastTime: 0,
     content: "<p>Content unavailable — please check database connection.</p>",
   },
   "violence-is-never-the-answer": {
@@ -223,6 +244,8 @@ const STATIC_POSTS: Record<string, BlogPost> = {
     date: "May 16, 2026",
     tags: ["hypocrisy"],
     readTime: "8 min read",
+    wordCount: 0,
+    blogcastTime: 0,
     content: "<p>Content unavailable — please check database connection.</p>",
   },
 };

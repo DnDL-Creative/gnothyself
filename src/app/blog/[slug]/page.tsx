@@ -10,6 +10,8 @@ import RelatedPosts from "./_components/RelatedPosts";
 import ProductCarousel from "./_components/ProductCarousel";
 import CarouselHydrator from "./_components/CarouselHydrator";
 import ImageLightbox from "@/components/ui/ImageLightbox";
+import AudioSection from "./_components/AudioSection";
+import AudioHydrator from "./_components/AudioHydrator";
 import styles from "./page.module.css";
 
 /** Revalidate every 60s so VibeWriter edits go live without redeploying */
@@ -32,10 +34,10 @@ export async function generateMetadata({
   if (!post) return { title: "Not Found" };
   return {
     title: post.seoTitle || post.title,
-    description: post.subtitle,
+    description: post.metaDescription || post.subtitle,
     openGraph: {
       title: post.seoTitle || post.title,
-      description: post.subtitle,
+      description: post.metaDescription || post.subtitle,
       type: "article",
       ...(post.heroImage && {
         images: [{ url: post.heroImage, width: 1200, height: 630, alt: post.heroImageAlt || post.title }],
@@ -59,17 +61,47 @@ export default async function BlogPostPage({
     <main className={styles.main}>
       {/* ── HERO IMAGE ──────────────────────────────────────────── */}
       {post.heroImage && (
-        <div className={styles.heroWrap}>
-          <PipeFrame>
-            <Image
-              src={post.heroImage}
-              alt={post.heroImageAlt || post.title}
-              width={960}
-              height={540}
-              className={styles.heroImage}
-              priority
-            />
-          </PipeFrame>
+      <div className={styles.heroWrap} style={{ margin: '46px auto 44px' }}>
+          {/* Use PipeFrame for default/square (rectangular corners), CSS border for circle/rounded */}
+          {post.heroStyle?.shape === 'circle' || post.heroStyle?.shape === 'rounded' ? (
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}>
+              <Image
+                src={post.heroImage}
+                alt={post.heroImageAlt || post.title}
+                width={960}
+                height={540}
+                priority
+                style={{
+                  width: '100%',
+                  maxWidth: post.heroStyle?.shape === 'circle' ? '540px' : undefined,
+                  height: 'auto',
+                  aspectRatio: post.heroStyle?.ratio || (post.heroStyle?.shape === 'circle' ? '1/1' : undefined),
+                  objectFit: 'cover',
+                  borderRadius: post.heroStyle?.shape === 'circle' ? '50%' : '16px',
+                  border: '3px solid #B87333',
+                  boxShadow: '0 0 20px rgba(184, 115, 51, 0.3)',
+                }}
+              />
+            </div>
+          ) : (
+            <PipeFrame>
+              <Image
+                src={post.heroImage}
+                alt={post.heroImageAlt || post.title}
+                width={960}
+                height={540}
+                className={styles.heroImage}
+                priority
+                style={{
+                  aspectRatio: post.heroStyle?.ratio || undefined,
+                  objectFit: 'cover',
+                }}
+              />
+            </PipeFrame>
+          )}
           {post.heroImageAlt && post.heroImageAlt !== post.title && (
             <div className={styles.heroCaption}>
               {post.heroImageAlt}
@@ -80,70 +112,57 @@ export default async function BlogPostPage({
 
       {/* ── ARTICLE ─────────────────────────────────────────────── */}
       <article className={styles.article}>
-        <Link href="/blog" className={styles.backLink}>
-          ← back to observations
-        </Link>
 
         {/* ── HEADER ────────────────────────────────────────────── */}
         <header className={styles.header}>
+          <h1 className={styles.title}>{post.title}</h1>
+          {post.subtitle && (
+            <p className={styles.subtitle}>{post.subtitle}</p>
+          )}
           <div className={styles.meta}>
             <span>{post.date}</span>
-            <span className={styles.dot}>·</span>
-            <span>{post.readTime}</span>
-            {post.author && (
+            <span className={styles.metaPipe} />
+            {post.tags.length > 0 && (
               <>
-                <span className={styles.dot}>·</span>
-                <span>{post.author}{post.authorTitle ? ` | ${post.authorTitle}` : ""}</span>
+                <span className={styles.metaTag}>{post.tags[0]}</span>
+                <span className={styles.metaPipe} />
               </>
             )}
-          </div>
-          <h1 className={styles.title}>{post.title}</h1>
-          <p className={styles.subtitle}>{post.subtitle}</p>
-          <div className={styles.tags}>
-            {post.tags.map((t) => (
-              <span key={t} className={styles.tag}>{t}</span>
-            ))}
+            <span>{post.wordCount.toLocaleString()} words · {post.readTime}</span>
+            {post.blogcastUrl && (
+              <>
+                <span className={styles.metaPipe} />
+                <span>~{post.blogcastTime} min blogcast</span>
+              </>
+            )}
           </div>
         </header>
 
         {/* ── AUDIO (Spotify / Blogcast) ────────────────────────── */}
-        {(post.musicEmbed || post.blogcastUrl) && (
-          <div className={styles.audioSection}>
-            {post.musicEmbed && (
-              <div className={styles.audioCard}>
-                <iframe
-                  style={{ borderRadius: "12px", display: "block" }}
-                  src={post.musicEmbed.includes("/embed/") ? post.musicEmbed : post.musicEmbed.replace(".com/", ".com/embed/")}
-                  width="100%"
-                  height="152"
-                  frameBorder="0"
-                  allowFullScreen
-                  loading="lazy"
-                  title="Music embed"
-                />
-              </div>
-            )}
-            {post.blogcastUrl && (
-              <div className={styles.audioCard}>
-                <div className={styles.blogcastLabel}>⊙ blogcast</div>
-                <audio controls className={styles.blogcastPlayer}>
-                  <source src={post.blogcastUrl} />
-                </audio>
-              </div>
-            )}
-          </div>
-        )}
+        <AudioSection musicEmbed={post.musicEmbed} blogcastUrl={post.blogcastUrl} />
 
         {/* ── BODY CONTENT ────────────────────────────────────── */}
         <div className={styles.body} data-lightbox>
           <CarouselHydrator />
           <ImageLightbox />
+          <AudioHydrator />
           {post.content ? parse(processShortcodes(post.content)) : (
             <p>Content unavailable.</p>
           )}
         </div>
 
         <footer className={styles.postFooter}>
+          {post.author && (
+            <div className={styles.authorBlock}>
+              <span className={styles.authorName}>{post.author}</span>
+              {post.authorTitle && (
+                <>
+                  <span className={styles.metaPipe} />
+                  <span className={styles.authorTitle}>{post.authorTitle}</span>
+                </>
+              )}
+            </div>
+          )}
           <Link href="/blog" className={styles.backLink}>
             ← all observations
           </Link>

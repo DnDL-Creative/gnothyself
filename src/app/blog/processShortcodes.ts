@@ -104,14 +104,21 @@ function renderImage(parts: string[]): string {
   const params = parseParams(parts.slice(1));
   const size = params.size || "large";
   const align = params.align || "center";
+  const shape = params.shape || "";
   const caption = params.caption || "";
 
-  const figureClass = `itg-media-image itg-size-${size} itg-align-${align}`;
+  const classes = [
+    "itg-media-image",
+    `itg-size-${size}`,
+    `itg-align-${align}`,
+    shape ? `itg-shape-${shape}` : "",
+  ].filter(Boolean).join(" ");
+
   const captionHtml = caption
     ? `<figcaption>${caption}</figcaption>`
     : "";
 
-  return `<figure class="${figureClass}"><img src="${url}" alt="${caption || "Blog image"}" loading="lazy" />${captionHtml}</figure>`;
+  return `<figure class="${classes}"><img src="${url}" alt="${caption || "Blog image"}" loading="lazy" />${captionHtml}</figure>`;
 }
 
 function renderGallery(type: "duo" | "trio", parts: string[]): string {
@@ -168,14 +175,40 @@ function renderCarousel(parts: string[]): string {
   return `<figure class="itg-media-carousel"><div class="itg-carousel-track">${slides}</div><div class="itg-carousel-controls"><button class="itg-carousel-prev" aria-label="Previous">‹</button><div class="itg-carousel-dots">${dots}</div><button class="itg-carousel-next" aria-label="Next">›</button></div>${captionHtml}</figure>`;
 }
 
-function renderAudio(url: string): string {
-  const trimmed = url.trim();
-  if (trimmed.includes("spotify.com")) {
-    const embedUrl = getSpotifyEmbedUrl(trimmed);
-    return `<div class="itg-media-audio"><iframe style="border-radius:12px" src="${embedUrl}" width="100%" height="152" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify embed"></iframe></div>`;
+function renderAudio(parts: string[]): string {
+  const url = parts[0]?.trim();
+  if (!url) return "";
+  const params = parseParams(parts.slice(1));
+  const size = params.size || "large";
+  const align = params.align || "center";
+  const classes = `itg-media-audio itg-size-${size} itg-align-${align}`;
+
+  if (url.includes("spotify.com")) {
+    const embedUrl = getSpotifyEmbedUrl(url);
+    return `<div class="${classes}"><iframe style="border-radius:12px" src="${embedUrl}" width="100%" height="152" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify embed"></iframe></div>`;
   }
-  // Generic audio file
-  return `<div class="itg-media-audio"><audio controls preload="none"><source src="${trimmed}" /></audio></div>`;
+  // Emit a hydration placeholder — AudioHydrator will mount TechnicolorPlayer here
+  return `<div class="${classes}" data-audio-hydrate data-audio-src="${url}"></div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Social Embeds
+   ═══════════════════════════════════════════════════════════════════ */
+
+function renderTweet(url: string): string {
+  const trimmed = url.trim();
+  return `<div class="itg-embed-tweet"><blockquote class="twitter-tweet"><a href="${trimmed}"></a></blockquote></div>`;
+}
+
+function renderInstagram(url: string): string {
+  const trimmed = url.trim();
+  return `<div class="itg-embed-instagram"><blockquote class="instagram-media" data-instgrm-permalink="${trimmed}" data-instgrm-version="14"></blockquote></div>`;
+}
+
+function renderTikTok(url: string): string {
+  const trimmed = url.trim();
+  const videoId = trimmed.split("/video/")[1]?.split("?")[0] || "";
+  return `<div class="itg-embed-tiktok"><blockquote class="tiktok-embed" cite="${trimmed}" data-video-id="${videoId}"><a href="${trimmed}"></a></blockquote></div>`;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -221,7 +254,13 @@ export function processShortcodes(html: string): string {
       case "trio":
         return renderGallery("trio", parts);
       case "audio":
-        return renderAudio(parts[0]);
+        return renderAudio(parts);
+      case "tweet":
+        return renderTweet(parts[0]);
+      case "instagram":
+        return renderInstagram(parts[0]);
+      case "tiktok":
+        return renderTikTok(parts[0]);
       default:
         return _match; // Leave unknown shortcodes untouched
     }
@@ -230,7 +269,7 @@ export function processShortcodes(html: string): string {
   // Auto-detect bare Spotify URLs and embed them
   result = result.replace(
     /<p>\s*(https:\/\/open\.spotify\.com\/[^\s<]+)\s*<\/p>/gi,
-    (_m, url) => renderAudio(url)
+    (_m, url) => renderAudio([url])
   );
 
   return result;

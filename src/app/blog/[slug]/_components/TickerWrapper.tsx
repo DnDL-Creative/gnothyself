@@ -74,9 +74,9 @@ export default function TickerWrapper({ children, speed = 0.5, reverse = false, 
       onTouchStart={() => { hoveredRef.current = true; }}
       onTouchEnd={() => { hoveredRef.current = false; }}
     >
-      {/* Two copies for seamless infinite loop */}
+      {/* Duplicate only when auto-scrolling for seamless loop */}
       {children}
-      {children}
+      {isPlaying && children}
     </div>
   );
 }

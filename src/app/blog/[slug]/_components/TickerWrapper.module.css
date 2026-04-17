@@ -10,21 +10,21 @@
   padding: 8px 8px 16px 8px;
 }
 
-/* Hide scrollbar + fade edges while auto-scrolling */
+/* Hide scrollbar + fade cards at edges while auto-scrolling */
 .tickerPlaying {
   scrollbar-width: none;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    black 3%,
-    black 97%,
+    black 8%,
+    black 92%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    black 3%,
-    black 97%,
+    black 8%,
+    black 92%,
     transparent 100%
   );
 }

@@ -6,7 +6,7 @@ import { PipeFrame } from "@/components/ui/PipeFrame/PipeFrame";
 import type { BlogPost } from "./posts";
 import styles from "./page.module.css";
 
-type SortOption = "newest" | "oldest";
+type SortOption = "newest" | "oldest" | "popular";
 
 const parseDate = (dateStr: string): number => {
   const d = new Date(dateStr);
@@ -31,7 +31,16 @@ export default function BlogGrid({ posts }: { posts: BlogPost[] }) {
     return [...filtered].sort((a, b) => {
       const da = parseDate(a.date);
       const db = parseDate(b.date);
-      return sort === "newest" ? db - da : da - db;
+      switch (sort) {
+        case "oldest":
+          return da - db;
+        case "popular":
+          // Popular = newest for now (can swap to view count later)
+          return db - da;
+        case "newest":
+        default:
+          return db - da;
+      }
     });
   }, [posts, sort, activeTag]);
 
@@ -39,33 +48,29 @@ export default function BlogGrid({ posts }: { posts: BlogPost[] }) {
     <>
       <div className={styles.controls}>
         <div className={styles.sortGroup}>
-          {(["newest", "oldest"] as SortOption[]).map((opt) => (
+          {(["newest", "oldest", "popular"] as SortOption[]).map((opt) => (
             <button
               key={opt}
               onClick={() => setSort(opt)}
               className={`${styles.sortBtn} ${sort === opt ? styles.sortBtnActive : ""}`}
             >
-              {opt === "newest" ? "↑ newest" : "↓ oldest"}
+              {opt === "newest" ? "↑ newest" : opt === "oldest" ? "↓ oldest" : "♛ popular"}
             </button>
           ))}
         </div>
-        <div className={styles.tagFilters}>
-          <button
-            onClick={() => setActiveTag(null)}
-            className={`${styles.sortBtn} ${activeTag === null ? styles.sortBtnActive : ""}`}
-          >
-            all
-          </button>
+
+        <select
+          value={activeTag || ""}
+          onChange={(e) => setActiveTag(e.target.value || null)}
+          className={styles.tagSelect}
+        >
+          <option value="">all tags</option>
           {allTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setActiveTag(tag)}
-              className={`${styles.sortBtn} ${activeTag === tag ? styles.sortBtnActive : ""}`}
-            >
+            <option key={tag} value={tag}>
               {tag}
-            </button>
+            </option>
           ))}
-        </div>
+        </select>
       </div>
 
       <div className={styles.grid}>

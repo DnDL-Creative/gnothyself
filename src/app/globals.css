@@ -64,18 +64,26 @@
   --font-mono:                var(--font-jetbrains), 'JetBrains Mono', monospace;
   --font-outfit:              var(--font-outfit), 'Outfit', system-ui, sans-serif;
 
-  --text-xs:                  0.75rem;
-  --text-sm:                  0.8125rem;  /* 13px — nav, labels */
-  --text-base:                1rem;       /* 16px — body */
-  --text-lg:                  1.125rem;   /* 18px — lead paragraphs */
-  --text-xl:                  1.25rem;    /* 20px — h4 */
-  --text-2xl:                 1.5rem;     /* 24px — h3 */
-  --text-3xl:                 1.875rem;   /* 30px — h2 */
-  --text-4xl:                 2.25rem;    /* 36px */
-  --text-h1:                  clamp(2rem, 3vw + 0.5rem, 2.75rem);  /* h1 — moderate, not massive */
+  /* Fluid type scale — clamp(min, preferred, max)
+     Calculated for 375px → 1024px viewport range.
+     Formula: slope = (max-min)/(1024-375), intercept = min - slope*375 */
+  --text-xs:                  clamp(0.6875rem, 0.663rem + 0.08vw, 0.75rem);    /* 11→12px */
+  --text-sm:                  clamp(0.75rem, 0.702rem + 0.15vw, 0.8125rem);    /* 12→13px */
+  --text-base:                clamp(0.9375rem, 0.901rem + 0.15vw, 1rem);       /* 15→16px */
+  --text-lg:                  clamp(1rem, 0.928rem + 0.31vw, 1.125rem);        /* 16→18px */
+  --text-xl:                  clamp(1.125rem, 1.053rem + 0.31vw, 1.25rem);     /* 18→20px */
+  --text-2xl:                 clamp(1.25rem, 1.106rem + 0.62vw, 1.5rem);       /* 20→24px */
+  --text-3xl:                 clamp(1.5rem, 1.284rem + 0.92vw, 1.875rem);      /* 24→30px */
+  --text-4xl:                 clamp(1.75rem, 1.462rem + 1.23vw, 2.25rem);      /* 28→36px */
+  --text-h1:                  clamp(1.75rem, 1.174rem + 2.46vw, 2.75rem);      /* 28→44px */
+
+  /* Blog body — fluid, mathematically precise */
+  --text-blog-body:           clamp(1rem, 0.928rem + 0.31vw, 1.125rem);        /* 16→18px */
+  --text-blog-h2:             clamp(1.375rem, 1.231rem + 0.62vw, 1.625rem);    /* 22→26px */
+  --text-blog-meta:           clamp(0.8125rem, 0.704rem + 0.46vw, 1rem);       /* 13→16px */
 
   --leading-tight:            1.25;
-  --leading-normal:           1.7;   /* generous breathing room for body text */
+  --leading-normal:           1.7;   /* site-wide default — cards, nav, PipeFrames depend on this */
   --leading-relaxed:          1.85;
 
   --tracking-tight:           -0.01em;

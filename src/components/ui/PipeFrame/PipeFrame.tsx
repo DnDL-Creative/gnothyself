@@ -82,17 +82,7 @@ export function PipeFrame({
           viewBox={`${-pad} ${-pad} ${w + pad * 2} ${h + pad * 2}`}
           aria-hidden="true"
         >
-          {/* Background fill — behind pipes */}
-          {bg && (
-            <rect
-              x={-0.5} y={-0.5}
-              width={w + 1} height={h + 1}
-              rx={6} ry={6}
-              fill={bg}
-              stroke={bg}
-              strokeWidth={0.5}
-            />
-          )}
+          {/* Background fill removed — bg applied to .content div instead */}
           <line x1={R + EXT} y1={0} x2={w - R - EXT} y2={0}
             stroke={COPPER} strokeWidth={PIPE} strokeLinecap="butt" />
           <line x1={w} y1={R + EXT} x2={w} y2={h - R - EXT}
@@ -122,7 +112,7 @@ export function PipeFrame({
           ))}
         </svg>
       )}
-      <div className={styles.content}>{children}</div>
+      <div className={styles.content} style={bg ? { backgroundColor: bg } : undefined}>{children}</div>
     </div>
   );
 }
